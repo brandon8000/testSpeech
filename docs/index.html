@@ -7,6 +7,7 @@
       var recognizing = false;
       var final_transcript;
       var ignore_onend = false;
+      var ready = false;
 
       function begin(){
         var welcomeMessage = "Welcome to this wonderful program. I can't wait for it to be super special awesome.";
@@ -16,6 +17,8 @@
       }
 
       function verify(){
+        if(!ready)
+          return;
         if(final_transcript.length > 0)
           responsiveVoice.speak("I am satisfied with your input. Thank you.");
         else
@@ -57,6 +60,7 @@
             recognizing = false;
             console.log("We reached onend!");
             console.log("You said: "+final_transcript);
+            ready = true;
             verify();
           };
           recognition.onresult = function(event) {
