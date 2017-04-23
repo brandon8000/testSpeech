@@ -20,9 +20,9 @@
       function begin(){
         context = dialogueScript.hackru;
         var welcomeMessage = context[1].welcome_message;
-        responsiveVoice.speak(welcomeMessage, 'UK English Female', {onend: askQuestions});
         questionsToAsk = context[0].questions;
         ultimateTimer = questionsToAsk.length;
+        responsiveVoice.speak(welcomeMessage, 'UK English Female', {onend: askQuestions});
       }
 
       function askQuestions(){
@@ -31,7 +31,9 @@
           var textToSpeak = questionsToAsk[counter].questionText;
           counter++;
           responsiveVoice.speak(textToSpeak, 'UK English Female', {onend: listenToUser});
-          responsiveVoice.speak("", 'UK English Female', {onend: askQuestions});
+          setTimeout(function(){
+            responsiveVoice.speak("", 'UK English Female', {onend: askQuestions});
+          }, 8500);
         }
         else{
           responsiveVoice.speak("That is everything I needed to hear. Thank you for taking the time to give me your feedback!", 'UK English Female', {onend: publishData});
