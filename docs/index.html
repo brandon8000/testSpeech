@@ -57,6 +57,7 @@
             recognizing = false;
             console.log("We reached onend!");
             console.log("You said: "+final_transcript);
+            callback();
           };
           recognition.onresult = function(event) {
             var interim_transcript = '';
