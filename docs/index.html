@@ -11,6 +11,8 @@
       function begin(){
         var welcomeMessage = "Welcome to this wonderful program. I can't wait for it to be super special awesome.";
         responsiveVoice.speak(welcomeMessage, 'UK English Female', {onend: listenToUser});
+        var fish = 4*20;
+        console.log("We did a calculation: "+fish);
       }
 
       function listenToUser(){
@@ -25,7 +27,6 @@
           recognition.lang = 'en-US';
           recognition.start();
           recognizing = true;
-          console.log("I think recognition is starting!");
 
           recognition.onerror = function(event) {
             console.log("We reached onerror!");
@@ -47,9 +48,9 @@
           recognition.onend = function() {
             recognizing = false;
             console.log("We reached onend!");
+            console.log("You said: "+final_transcript);
           };
           recognition.onresult = function(event) {
-            console.log("We reached onresult!");
             var interim_transcript = '';
             for (var i = event.resultIndex; i < event.results.length; ++i) {
               if (event.results[i].isFinal) {
@@ -59,7 +60,6 @@
               }
             }
             final_transcript = capitalize(final_transcript);
-            console.log("You said: "+final_transcript);
           };
         }
       }
