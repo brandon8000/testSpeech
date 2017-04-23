@@ -10,7 +10,7 @@
 
       function begin(){
         var welcomeMessage = "Welcome to this wonderful program. I can't wait for it to be super special awesome.";
-        responsiveVoice.speak(welcomeMessage, 'UK English Female', {onend: listenToUser(verify)});
+        responsiveVoice.speak(welcomeMessage, 'UK English Female', {onend: listenToUser});
         var fish = 4*20;
         console.log("We did a calculation: "+fish);
       }
@@ -22,7 +22,7 @@
           responsiveVoice.speak("I had trouble hearing you. Can you repeat that?");
       }
 
-      function listenToUser(callback){
+      function listenToUser(){
         final_transcript = '';
         console.log("Finished speaking! Time to listen!");
         start_timestamp = event.timeStamp;
@@ -57,7 +57,7 @@
             recognizing = false;
             console.log("We reached onend!");
             console.log("You said: "+final_transcript);
-            callback();
+            verify();
           };
           recognition.onresult = function(event) {
             var interim_transcript = '';
