@@ -1,28 +1,58 @@
 <html>
 	<head>
 		<title>I'm just playing around</title>
+    <script src="./dataFile.js"></script>
 		<script src="https://code.responsivevoice.org/responsivevoice.js"></script>
     <script type="text/javascript">
+      console.log(dialogueScript.barber);
       var recognition;
       var recognizing = false;
       var final_transcript;
       var ignore_onend = false;
       var ready = false;
+      var context;
+      var userResponses = "";
+      var finalReady = false;
+      var ultimateTimer;
+      var questionsToAsk;
+      var counter = 0;
 
       function begin(){
-        var welcomeMessage = "Welcome to this wonderful program. I can't wait for it to be super special awesome.";
-        responsiveVoice.speak(welcomeMessage, 'UK English Female', {onend: listenToUser});
-        var fish = 4*20;
-        console.log("We did a calculation: "+fish);
+        context = dialogueScript.hackru;
+        var welcomeMessage = context[1].welcome_message;
+        responsiveVoice.speak(welcomeMessage, 'UK English Female', {onend: askQuestions});
+        questionsToAsk = context[0].questions;
+        ultimateTimer = questionsToAsk.length;
+      }
+
+      function askQuestions(){
+        if(counter < ultimateTimer){
+          //console.log("The current question: "+question)
+          var textToSpeak = questionsToAsk[counter].questionText;
+          counter++;
+          responsiveVoice.speak(textToSpeak, 'UK English Female', {onend: listenToUser});
+          responsiveVoice.speak("", 'UK English Female', {onend: askQuestions});
+        }
+        else{
+          responsiveVoice.speak("That is everything I needed to hear. Thank you for taking the time to give me your feedback!", 'UK English Female', {onend: publishData});
+        }
+      }
+
+      function publishData(){
+        console.log("These are all the answers we collected:\n"+userResponses);
       }
 
       function verify(){
         if(!ready)
           return;
-        if(final_transcript.length > 0)
+        if(final_transcript.length > 0){
           responsiveVoice.speak("I am satisfied with your input. Thank you.");
+          userResponses += final_transcript+";";
+        }
         else
           responsiveVoice.speak("I had trouble hearing you. Can you repeat that?");
+        ready = false;
+        return
       }
 
       function listenToUser(){
@@ -61,6 +91,9 @@
             console.log("We reached onend!");
             console.log("You said: "+final_transcript);
             ready = true;
+            --ultimateTimer;
+            if(ultimateTimer == 0)
+              finalReady = true;
             verify();
           };
           recognition.onresult = function(event) {
