@@ -5,17 +5,25 @@
     <script type="text/javascript">
       var recognition;
       var recognizing = false;
-      var final_transcript = '';
+      var final_transcript;
       var ignore_onend = false;
 
       function begin(){
         var welcomeMessage = "Welcome to this wonderful program. I can't wait for it to be super special awesome.";
-        responsiveVoice.speak(welcomeMessage, 'UK English Female', {onend: listenToUser});
+        responsiveVoice.speak(welcomeMessage, 'UK English Female', {onend: listenToUser(verify)});
         var fish = 4*20;
         console.log("We did a calculation: "+fish);
       }
 
-      function listenToUser(){
+      function verify(){
+        if(final_transcript.length > 0)
+          responsiveVoice.speak("I am satisfied with your input. Thank you.");
+        else
+          responsiveVoice.speak("I had trouble hearing you. Can you repeat that?");
+      }
+
+      function listenToUser(callback){
+        final_transcript = '';
         console.log("Finished speaking! Time to listen!");
         start_timestamp = event.timeStamp;
         if (!('webkitSpeechRecognition' in window)) {
