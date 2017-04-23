@@ -31,9 +31,6 @@
           var textToSpeak = questionsToAsk[counter].questionText;
           counter++;
           responsiveVoice.speak(textToSpeak, 'UK English Female', {onend: listenToUser});
-          setTimeout(function(){
-            responsiveVoice.speak("", 'UK English Female', {onend: askQuestions});
-          }, 8500);
         }
         else{
           responsiveVoice.speak("That is everything I needed to hear. Thank you for taking the time to give me your feedback!", 'UK English Female', {onend: publishData});
@@ -47,13 +44,13 @@
       function verify(){
         if(!ready)
           return;
+        ready = false;
         if(final_transcript.length > 0){
-          responsiveVoice.speak("I am satisfied with your input. Thank you.");
           userResponses += final_transcript+";";
+          responsiveVoice.speak("", 'UK English Female', {onend: askQuestions});
         }
         else
-          responsiveVoice.speak("I had trouble hearing you. Can you repeat that?");
-        ready = false;
+          responsiveVoice.speak("I had trouble hearing you. Can you repeat that?", 'UK English Female', {onend: listenToUser});
         return
       }
 
@@ -93,9 +90,6 @@
             console.log("We reached onend!");
             console.log("You said: "+final_transcript);
             ready = true;
-            --ultimateTimer;
-            if(ultimateTimer == 0)
-              finalReady = true;
             verify();
           };
           recognition.onresult = function(event) {
