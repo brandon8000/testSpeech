@@ -1,0 +1,14 @@
+{
+  "name": "speech_tester",
+  "version": "0.0.1",
+  "description": "Testing mongodb access and speech nonsense",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "b-rad",
+  "license": "ISC",
+  "dependencies": {
+    "mongodb": "^2.2.26"
+  }
+}
